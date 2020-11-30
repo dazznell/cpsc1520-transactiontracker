@@ -4,19 +4,21 @@ window.addEventListener('load', function(e) {
     const table = document.querySelector("tbody");
     const removeIcon = `<img  src="img/remove.svg" data-index>`;
 
+    // add event listener to add button
     addTransaction.addEventListener("submit", function(e) {
       e.preventDefault();
 
       const validate = validateTrans(e.target);
       if (validate.valid) {
-        const htmlString = createTrans(validate);
-        addTrans(htmlString);
+        const addHTML = createTrans(validate);
+        addTrans(addHTML);
       }
     }); 
 
-    function addTrans(htmlString) {
+    // add function to put HTML into table
+    function addTrans(addHTML) {
       const createIndex = table.children.length;
-      let createNode = document.createRange().createContextualFragment(htmlString);
+      let createNode = document.createRange().createContextualFragment(addHTML);
       let rows = createNode.querySelector("tr");
       let remove = rows.querySelector("img");
       remove.dataset.index = createIndex;
@@ -24,6 +26,7 @@ window.addEventListener('load', function(e) {
       removeTransaction(remove);
     }
 
+    // removes transaction from table
     function removeTransaction(remove) {
       remove.addEventListener("click", removeTr);
     }
@@ -39,13 +42,14 @@ window.addEventListener('load', function(e) {
          });
      }
 
-
+    //  Create new transaction and interpolates string into HTML 
     function createTrans(newTrans) {
       const transElement = `<table><tr><td class="description">${newTrans.description}</td><td class="payment-type">${newTrans.type}</td><td class="currency">${newTrans.currency}</td><td class="remove"> ${removeIcon} </td></tr></table>`;
         //console.log(transElement)
       return transElement;
     }
 
+    // validates values inputted into the tracker
     function validateTrans(theForm) {
       const transItem = {};
       let errorCount = 0;
@@ -67,6 +71,4 @@ window.addEventListener('load', function(e) {
         return transItem;
       }
     }
-
-
 })
